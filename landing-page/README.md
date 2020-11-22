@@ -1,13 +1,10 @@
-# Landing Page Project
+# Welcome to SaraHamam's Landing Page Project README; powered by Udacity
 
-## Table of Contents
+In this section, i will try to outline the step-by-step of what has been done to get my page minpulated successfully
 
-* [Instructions](#instructions)
+---- I downloaded the Starter code 
+---- Started looking at the Project specification and followed the written instructions
+---- Created a new path under my GITHUB account and called it (Landing-page-udacity)
+---- Started updating the code files according to the knowledge i learned so far in the course
 
-## Instructions
-
-The starter project has some HTML and CSS styling to display a static version of the Landing Page project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
-
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the Udacity Classroom.
+# Happy Learning :) 
