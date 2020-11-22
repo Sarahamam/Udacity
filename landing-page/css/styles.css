@@ -67,7 +67,7 @@ section {
 .navbar__menu ul {
     padding-left: 0;
     margin: 0;
-    text-align: right;
+    text-align: center;
 }
 
 .navbar__menu li {
@@ -75,8 +75,7 @@ section {
 }
 
 .navbar__menu .menu__link {
-    display: block;
-    padding: 1em;
+    
     font-weight: bold;
     text-decoration: none;
     color: #000;
