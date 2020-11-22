@@ -6,7 +6,12 @@ In this section, i will try to outline the step-by-step of what has been done to
 -Created a new path under my GITHUB account and called it (Landing-page-udacity)
 -Started updating the code files according to the knowledge i learned so far in the course
 
-# Languages that we are using here include are (HTML, CSS, Java Script)
+# Files 
+Under this folder, you will find the following files:
+-CSS Folder (for styling)
+-JS folder  (For dynamicity of the page)
+-INDEX.HTML (Visual and final output of the web landing page)
+-README.md  (Guidance for the user)
 
 # Our Goal
 Landing page with dynamic navigation  and by clicking an item from the navigation menu, the link should scroll to the appropriate section.  
