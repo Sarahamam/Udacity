@@ -59,7 +59,7 @@ function activateCurrentSection(currentSection) {
 
 function activateNavLinks(currentSectionId) {
     let navbarAnchors = document.querySelectorAll(".nav__hyperlink");
-    //console.log(navbarAnchors);
+    console.log(navbarAnchors);
         navbarAnchors.forEach((element)=>{
             if(element.getAttribute('href') == `#${currentSectionId}`) {
                 element.classList.add("active-nav");
