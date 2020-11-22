@@ -7,4 +7,6 @@ In this section, i will try to outline the step-by-step of what has been done to
 ---- Created a new path under my GITHUB account and called it (Landing-page-udacity)
 ---- Started updating the code files according to the knowledge i learned so far in the course
 
+The languages that we are using here include (HTML, CSS, Java Script)
+
 # Happy Learning :) 
