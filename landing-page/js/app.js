@@ -58,23 +58,29 @@ window.addEventListener('load', buildNavbar())function addSections() {
 };
 
 // Add class 'active' to section when near top of viewport
-function activateCurrentSection(currentSection) {
-    currentSection.classList.add("your-active-class", "active");
-
-    deactivateNavLinks();
-    activateNavLinks(currentSection.getAttribute('id'));
-}
-
-function activateNavLinks(currentSectionId) {
-    let navbarAnchors = document.querySelectorAll(".nav__hyperlink");
-    console.log(navbarAnchors);
-        navbarAnchors.forEach((element)=>{
-            if(element.getAttribute('href') == `#${currentSectionId}`) {
-                element.classList.add("active-nav");
+function setActive () {
+    window.addEventListener('scroll', function (event) {
+        let section = getActiveElem();
+        section.classList.add('your-active-class');
+        // set other sections as inactive
+        for (let item of sections) {
+            if (item.id != section.id & item.classList.contains('your-active-class')) {
+                item.classList.remove('your-active-class');
             }
-        });
-}
-
+        }
+        // set corresponding header style
+        const active = document.querySelector('li[data-nav="' + section.id + '"]');
+        active.classList.add('active__link');
+        // remove from other headers
+        const headers = document.querySelectorAll('.menu__link');
+        for (let item of headers) {
+            console.log(item);
+            if (item.dataset.nav != active.dataset.nav & item.classList.contains('active__link')) {
+                item.classList.remove('active__link');
+            }
+        };
+    });
+};
 // Scroll to anchor ID using scrollTO event
 function scrollToSectionOnClick() {
     let navbarAnchors = document.querySelectorAll(".nav__hyperlink");
