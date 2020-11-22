@@ -18,27 +18,28 @@
  * 
 */
 //defining a global variable called (sections) 
-let navbarList = document.querySelector("#navbar__list");
-const sections = document.querySelectorAll("section");
-
-
+const navbar = document.querySelector('#navbar__list');
+const sections = document.querySelectorAll('section')
 
 /**
  * End Global Variables
  * Start Helper Functions
  * 
 */
-function isInViewport(elem) {
-	var distance = elem.getBoundingClientRect();
 
-	return (
-		distance.top >= -300 &&
-		distance.left >= 0 &&
-		distance.bottom <= (1.3 * window.innerHeight || document.documentElement.clientHeight) &&
-		distance.right <= (window.innerWidth || document.documentElement.clientWidth)
-	);
+// check which element is active
+function getActiveElem() {
+    maxSection = sections[0];
+    minVal = 1000000;
+    for (item of sections) {
+        let bounding = item.getBoundingClientRect();
+        if (bounding.top > -300 & bounding.top < minVal) {
+            minVal = bounding.top;
+            maxSection = item;
+        };
+    };
+    return maxSection;
 };
-
 
 /**
  * End Helper Functions
@@ -47,7 +48,7 @@ function isInViewport(elem) {
 */
 
 // build the nav
-window.addEventListener('load', buildNavbar())function addSections() {
+function addSections() {
     for (let item of sections) {
         let section = document.createElement('li');
         section.className = 'menu__link';
@@ -81,18 +82,15 @@ function setActive () {
         };
     });
 };
+
 // Scroll to anchor ID using scrollTO event
-function scrollToSectionOnClick() {
-    let navbarAnchors = document.querySelectorAll(".nav__hyperlink");
-    navbarAnchors.forEach((element) => {
-        element.addEventListener("click", function(event) {
-            event.preventDefault();
-            document.querySelector(element.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
+function scrollToClick() {
+    navbar.addEventListener('click', function (event) {
+        const clicked = document.querySelector('#' + event.target.dataset.nav)
+        clicked.scrollIntoView();
     });
-}
+};
+
 
 /**
  * End Main Functions
@@ -105,6 +103,6 @@ addSections();
 
 // Scroll to section on link click
 scrollToClick();
+
 // Set sections as active
 setActive();
-
