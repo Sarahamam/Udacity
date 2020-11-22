@@ -18,10 +18,8 @@
  * 
 */
 //defining a global variable called (sections) 
+let navbarList = document.querySelector("#navbar__list");
 const sections = document.querySelectorAll("section");
-//defining a global variable called (navigation) 
-const navigation = document.getElementByID('navbar__list'); 
-//let navbarList = document.querySelector("#navbar__list");
 
 
 
