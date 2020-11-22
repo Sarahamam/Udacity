@@ -47,7 +47,15 @@ function isInViewport(elem) {
 */
 
 // build the nav
-window.addEventListener('load', buildNavbar())
+window.addEventListener('load', buildNavbar())function addSections() {
+    for (let item of sections) {
+        let section = document.createElement('li');
+        section.className = 'menu__link';
+        section.dataset.nav = item.id;
+        section.innerText = item.dataset.nav;
+        navbar.appendChild(section);
+    };
+};
 
 // Add class 'active' to section when near top of viewport
 function activateCurrentSection(currentSection) {
@@ -87,34 +95,10 @@ function scrollToSectionOnClick() {
 */
 
 // Build menu 
-function buildNavbar() {
-	sections.forEach((element)=>{
-	    let listItem = document.createElement("li");
-	    listItem.classList.add("navbar__list__item");
-    	let sectionName = element.getAttribute("data-nav");
-    	let currentSectionId = element.getAttribute("id");
-        listItem.innerHTML = `<a href="#${currentSectionId}" class="nav__hyperlink">${sectionName}</a>`;
-        navbarList.appendChild(listItem);
-    });
-}
+addSections();
 
 // Scroll to section on link click
-scrollToSectionOnClick();
+scrollToClick();
 // Set sections as active
-window.addEventListener('scroll', function (event) {
-	event.preventDefault();
-	
-    sections.forEach((element) => {
-        // console.log(element);
-        if (isInViewport(element)) {
-            deactivateSections();
-            activateCurrentSection(element);
-            // console.log('In viewport!');
-        } else if(window.scrollY==0) {
-            deactivateSections();
-            deactivateNavLinks();
-            // console.log('No Change');
-        }
-    }, false);
-});
+setActive();
 
