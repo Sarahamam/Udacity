@@ -46,31 +46,24 @@ function getActiveElem() {
  * Begin Main Functions
  * 
 */
-function navbarFilling() {
-  for (let i = 0; i < sections.length; i++) {
-    let navItem = document.createElement("LI");
 
-    navList.append(navItem);
-
-    newLink = document.createElement("A");
-
-    navItem.append(newLink);
-
-    // use data-nav attribute to fill li node
-    newLink.innerHTML = sections[i].getAttribute("data-nav");
-
-    newLink.classList.add("menu__link");
-    newLink.style.cursor = "pointer";
-
-    newLink.setAttribute("href", "#section" + (i + 1));
-
-    //set a data-link attribute equals the section data-nav attr
-    newLink.setAttribute("data-link", sections[i].getAttribute("data-nav"));
-  }
-}
 // build the nav
-navbarFilling();
+function buildNavigation(){
+    for (let i=0; i < sections.length; i++){
+        const newMenuItem = document.createElement('li');
+        const sectionName = sections[i].getAttribute('data-nav')
+        const sectionId = sections[i].getAttribute('id')
+        newMenuItem.innerHTML = createNavItemHTML(sectionId, sectionName)
+         fragment.appendChild(newMenuItem);
+    }
+    const navBarList = document.getElementById('navbar__list')
+    navBarList.appendChild(fragment);
+}
 
+function createNavItemHTML(id, name){
+    const itemHTML = `<a class ="menu__link" data-id="${id}">${name}</a>`;
+    return itemHTML;
+}
 // Add class 'active' to section when near top of viewport
 function setActive () {
     window.addEventListener('scroll', function (event) {
