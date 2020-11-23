@@ -14,7 +14,10 @@ Under this folder, you will find the following files:
 -README.md  (Guidance for the user)
 
 # Our Goal
-Landing page with dynamic navigation  and by clicking an item from the navigation menu, the link should scroll to the appropriate section.  
+Landing page with dynamic navigation  and by clicking an item from the navigation menu, the link should scroll to the appropriate section. Specifications below were met successfully:
+1) Navigation is built dynamically as an unordered list
+2) Clear sections viewed while scrolling through the page
+3) When clicking an item from the navigation menu, the link scrolls to the appropriate section
 
 # To view the landing page
 Please click on the index.html and open it using your browser
