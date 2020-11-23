@@ -78,6 +78,7 @@ section {
     font-weight: bold;
     text-decoration: none;
     color: #000;
+    padding: 8px;
 }
 
 .navbar__menu .menu__link:hover {
