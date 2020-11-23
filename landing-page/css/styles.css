@@ -72,7 +72,6 @@ section {
 
 .navbar__menu li {
     display: inline-block;
-	<a href="#about">About</a>
 }
 
 .navbar__menu .menu__link {
