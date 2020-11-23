@@ -17,8 +17,9 @@
  * Define Global Variables
  * 
 */
-//defining a global variable called (sections) 
+//defining a global variable called (navbar) 
 const navbar = document.querySelector('#navbar__list');
+//defining a global variable called (sections) 
 const sections = document.querySelectorAll('section')
 
 /**
@@ -62,7 +63,7 @@ function setActive () {
     window.addEventListener('scroll', function (event) {
         let section = getActiveElem();
         section.classList.add('your-active-class');
-        // set other sections as inactive
+        // set other sections that are not in use by user as inactive
         for (let item of sections) {
             if (item.id != section.id & item.classList.contains('your-active-class')) {
                 item.classList.remove('your-active-class');
@@ -71,7 +72,7 @@ function setActive () {
         // set corresponding header style
         const active = document.querySelector('li[data-nav="' + section.id + '"]');
         active.classList.add('active__link');
-        // remove from other headers
+        // remove the item from header
         const headers = document.querySelectorAll('.menu__link');
         for (let item of headers) {
             console.log(item);
@@ -97,6 +98,7 @@ function scrollToClick() {
  * 
 */
 
+ // Calling the main functions defined above
 // Build menu 
 addSections();
 
