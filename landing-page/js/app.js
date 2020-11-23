@@ -48,7 +48,7 @@ function getActiveElem() {
 */
 
 // build the nav
-function addSections() {
+function navigationBuild() {
     for (let item of sections) {
         let section = document.createElement('li');
         section.className = 'menu__link';
@@ -99,7 +99,7 @@ function scrollToClick() {
 */
 
 // Build menu 
-addSections();
+navigationBuild();
 
 // Scroll to section on link click
 scrollToClick();
