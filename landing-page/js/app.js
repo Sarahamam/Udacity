@@ -48,15 +48,7 @@ function getActiveElem() {
 */
 
 // build the nav
-function navigationBuild() {
-    for (let item of sections) {
-        let section = document.createElement('li');
-        section.className = 'menu__link';
-        section.dataset.nav = item.id;
-        section.innerText = item.dataset.nav;
-        navbar.appendChild(section);
-    };
-};
+window.addEventListener('load', buildNavbar())
 
 // Add class 'active' to section when near top of viewport
 function setActive () {
