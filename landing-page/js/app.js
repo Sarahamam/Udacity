@@ -48,22 +48,15 @@ function getActiveElem() {
 */
 
 // build the nav
-function buildNavigation(){
-    for (let i=0; i < sections.length; i++){
-        const newMenuItem = document.createElement('li');
-        const sectionName = sections[i].getAttribute('data-nav')
-        const sectionId = sections[i].getAttribute('id')
-        newMenuItem.innerHTML = createNavItemHTML(sectionId, sectionName)
-         fragment.appendChild(newMenuItem);
-    }
-    const navBarList = document.getElementById('navbar__list')
-    navBarList.appendChild(fragment);
-}
-
-function createNavItemHTML(id, name){
-    const itemHTML = `<a class ="menu__link" data-id="${id}">${name}</a>`;
-    return itemHTML;
-}
+function addSections() {
+    for (let item of sections) {
+        let section = document.createElement('li');
+        section.className = 'menu__link';
+        section.dataset.nav = item.id;
+        section.innerText = item.dataset.nav;
+        navbar.appendChild(section);
+    };
+};
 // Add class 'active' to section when near top of viewport
 function setActive () {
     window.addEventListener('scroll', function (event) {
@@ -105,16 +98,7 @@ function scrollToClick() {
 */
 
 // Build menu 
-function buildNavbar() {
-	sections.forEach((element)=>{
-	    let listItem = document.createElement("li");
-	    listItem.classList.add("navbar__list__item");
-    	let sectionName = element.getAttribute("data-nav");
-    	let currentSectionId = element.getAttribute("id");
-        listItem.innerHTML = `<a href="#${currentSectionId}" class="nav__hyperlink">${sectionName}</a>`;
-        navbarList.appendChild(listItem);
-    });
-}
+addSections();
 
 // Scroll to section on link click
 scrollToClick();
