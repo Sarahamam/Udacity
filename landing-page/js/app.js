@@ -99,7 +99,16 @@ function scrollToClick() {
 */
 
 // Build menu 
-navigationBuild();
+function buildNavbar() {
+	sections.forEach((element)=>{
+	    let listItem = document.createElement("li");
+	    listItem.classList.add("navbar__list__item");
+    	let sectionName = element.getAttribute("data-nav");
+    	let currentSectionId = element.getAttribute("id");
+        listItem.innerHTML = `<a href="#${currentSectionId}" class="nav__hyperlink">${sectionName}</a>`;
+        navbarList.appendChild(listItem);
+    });
+}
 
 // Scroll to section on link click
 scrollToClick();
