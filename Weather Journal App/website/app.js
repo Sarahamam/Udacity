@@ -1,13 +1,18 @@
 /* Global Variables */
 const form = document.querySelector('.app__form');
 const icons = document.querySelectorAll('.entry__icon');
-
-// Base URL and API Key for OpenWeatherMap API
-//const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const appID = '&appid=8fe35d267fec84174d32e7bac0493cea';
+const baseURL = 'api.openweathermap.org/data/2.5/weather?'
+const zipInput = document.getElementById('zip');
+const userInput = document.getElementById('feelings')
+const dateHolder = document.getElementById('date')
+const tempHolder = document.getElementById('temp')
+const contentHolder = document.getElementById('content')
+const postURL = 'http://localhost:8000'
+const getURL = 'http://localhost:8000/all'
 
-//Get the date
+
+//Create a new Date Instance
 let d = new Date();
 let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 
@@ -18,9 +23,9 @@ document.getElementById('generate').addEventListener('click', performAction);
 function performAction(e) {
   e.preventDefault();
   // get user input values
-  const newZip = document.getElementById('zip').value;
-  const content = document.getElementById('feelings').value;
-
+  //const newZip = document.getElementById('zip').value;
+  //const content = document.getElementById('feelings').value;
+/*
   getWeather(baseURL, newZip, appID)
     .then(function (userData) {
       // add data to POST request
@@ -33,56 +38,51 @@ function performAction(e) {
   form.reset();
 }
 
-/* Function to GET Web API Data*/
-const getWeather = async (baseURL, newZip, appID) => {
-  // res equals to the result of fetch function
-  const res = await fetch(baseURL + newZip + appID);
-  try {
-    // userData equals to the result of fetch function
-    const userData = await res.json();
-    return userData;
-  } catch (error) {
-    console.log("error", error);
-  }
+*/
+  // Call function to fetch via OpenWeatherMap
+const getWeather = async (baseURL, zip = '94712,us', api) => {
+  const url = `http://${baseURL}zip=${zip}&appid=${api}`
+  const response = await fetch(url)
+  let jsonResponse = await response.json()
+  return jsonResponse
 }
 
-/* Function to POST data */
-const postData = async (url = '', data = {}) => {
-  const req = await fetch(url, {
-    method: "POST",
-    credentials: "same-origin",
+// User-input post data function
+const postData = async (path, data = {}) => {
+  const response = await fetch(path, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      "Content-Type": "application/json;charset=UTF-8"
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      date: data.date,
-      temp: data.temp,
-      content: data.content
-    })
+    redirect: 'follow', // manual, *follow, error
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
   })
+}
 
-  try {
-    const newData = await req.json();
-    return newData;
-  }
-  catch (error) {
-    console.log(error);
-  }
-};
-
-
+// Update UI function 
 const updateUI = async () => {
-  const request = await fetch('/all');
-  try {
-    const allData = await request.json()
-    // show icons on the page
-    icons.forEach(icon => icon.style.opacity = '1');
-    // update new entry values
-    document.getElementById('date').innerHTML = allData.date;
-    document.getElementById('temp').innerHTML = allData.temp;
-    document.getElementById('content').innerHTML = allData.content;
+  const response = await fetch(getURL)
+  const jsonResponse = await response.json()
+  dateHolder.innerHTML = `<span class="entry-item">Date: </span>${jsonResponse.date}`
+  contentHolder.innerHTML = `<span class="entry-item">You feel: </span>${jsonResponse.userResponse}`
+  tempHolder.innerHTML = `<span class="entry-item">Temperature: </span>${jsonResponse.temperature}`
+}
+
+// Event handler handleClick
+const handleClick = async () => {
+  const weatherData = await getWeather(baseURL, zipInput.value, appid)
+  const data = {
+    temperature: weatherData.main.temp,
+    date: newDate,
+    userresponse: userInput.value
   }
-  catch (error) {
-    console.log("error", error);
-  }
-};
+  await postData(postURL, data)
+  updateUI()
+}
+
+// Add element event listener with 'generate' id
+const ele = document.getElementById('generate')
+ele.addEventListener('click', handleClick)
+
