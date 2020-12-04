@@ -1,88 +1,87 @@
 /* Global Variables */
+const form = document.querySelector('.app__form');
+const icons = document.querySelectorAll('.entry__icon');
 
-// Create a new date instance dynamically with JS
-//let d = new Date();
-//let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+// Base URL and API Key for OpenWeatherMap API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const apiKey = '3aa184cc6c3bddad7b8e707ae1f8aafe';
 
-let today = new Date().toDateString();
+//Get the date
+let d = new Date();
+let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 
-document.getElementById('generate').addEventListener('click', generateData);
+// Event listener to add function to existing HTML DOM element
+document.getElementById('generate').addEventListener('click', performAction);
 
-const zipError = document.querySelector('.zip-error');
+/* Function called by event listener */
+function performAction(e) {
+  e.preventDefault();
+  // get user input values
+  const newZip = document.getElementById('zip').value;
+  const content = document.getElementById('feelings').value;
 
-
-function generateData(event) {
-    zipError.style.display === 'none';
-    zipError.innerText = '';
-    const zipCode = document.getElementById('zip').value;
-    if (!zipCode) {
-        zipError.style.display === 'none';
-        zipError.innerText = "Please enter zip.";
-    }
-    const targetURL = baseURL + zipCode + '&appid=' + apiKey + '&units=imperial';
-    const content = document.getElementById('feelings').value;
-    retrieveData(targetURL)
-        .then(function (jsonData) {
-            postData('/addData', { date: today, temp: jsonData.main.temp, content: content, city: jsonData.name });
-            return { date: today, temp: jsonData.main.temp, content: content, city: jsonData.name };
-        })
-        .then(function () {
-            updateUI()
-        }
-        )
+  getWeather(baseURL, newZip, apiKey)
+    .then(function (userData) {
+      // add data to POST request
+      postData('/add', { date: newDate, temp: userData.main.temp, content })
+    }).then(function (newData) {
+      // call updateUI to update browser content
+      updateUI()
+    })
+  // reset form
+  form.reset();
 }
 
-// Return JSON data from the exernal API
-const retrieveData = async (url) => {
-    const request = await fetch(url);
-    try {
-        // Transform into JSON
-        const jsonData = await request.json();
-        if (jsonData.cod === "404") {
-            zipError.style.display = 'block';
-            zipError.innerText = "No data on server for this zip. Please enter another zip.";
-            return;
-        }
-        return jsonData;
-    }
-    catch (error) {
-        console.log("error", error);
-    }
+/* Function to GET Web API Data*/
+const getWeather = async (baseURL, newZip, apiKey) => {
+  // res equals to the result of fetch function
+  const res = await fetch(baseURL + newZip + apiKey);
+  try {
+    // userData equals to the result of fetch function
+    const userData = await res.json();
+    return userData;
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
-// Add data to the project endpoint using POST
+/* Function to POST data */
 const postData = async (url = '', data = {}) => {
-    const response = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
+  const req = await fetch(url, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8"
+    },
+    body: JSON.stringify({
+      date: data.date,
+      temp: data.temp,
+      content: data.content
+    })
+  })
 
-    try {
-        const newData = await response.json();
-        return newData;
-    } catch (error) {
-        console.log("error", error);
-    }
-}
+  try {
+    const newData = await req.json();
+    return newData;
+  }
+  catch (error) {
+    console.log(error);
+  }
+};
 
-// Update UI dynamically
+
 const updateUI = async () => {
-    const request = await fetch('/all');
-    try {
-        const allData = await request.json();
-        document.getElementById('entry-header').style.display = 'none';
-        document.getElementById('date').innerText = allData.date;
-        document.getElementById('temp').innerHTML = `${allData.temp} &deg;F in ${allData.city}`;
-        document.getElementById('content').innerText = allData.content;
-        document.getElementById('zip').value = '';
-        document.getElementById('feelings').value = '';
-    } catch (error) {
-        console.log("error", error);
-    }
-}
+  const request = await fetch('/all');
+  try {
+    const allData = await request.json()
+    // show icons on the page
+    icons.forEach(icon => icon.style.opacity = '1');
+    // update new entry values
+    document.getElementById('date').innerHTML = allData.date;
+    document.getElementById('temp').innerHTML = allData.temp;
+    document.getElementById('content').innerHTML = allData.content;
+  }
+  catch (error) {
+    console.log("error", error);
+  }
+};
