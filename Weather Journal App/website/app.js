@@ -17,7 +17,7 @@ let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 
 // Call function to fetch via OpenWeatherMap
 const getWeather = async (baseURL, zip = '94712,us', api) => {
-  const url = `http://${baseURL}zip=${zip}&appid=${api}`
+  const url = `http://${baseURL}zip=${zip}&appID=${api}`
   const response = await fetch(url)
   let jsonResponse = await response.json()
   return jsonResponse
@@ -48,7 +48,7 @@ const updateUI = async () => {
 
 // Event handler handleClick
 const handleClick = async () => {
-  const weatherData = await getWeather(baseURL, zipInput.value, appid)
+  const weatherData = await getWeather(baseURL, zipInput.value, appID)
   const data = {
     temperature: weatherData.main.temp,
     date: newDate,
