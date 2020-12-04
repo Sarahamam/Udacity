@@ -11,35 +11,11 @@ const contentHolder = document.getElementById('content')
 const postURL = 'http://localhost:8000'
 const getURL = 'http://localhost:8000/all'
 
-
-//Create a new Date Instance
+// Dynamically create a new JS date instance
 let d = new Date();
 let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 
-// Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', performAction);
-
-/* Function called by event listener */
-function performAction(e) {
-  e.preventDefault();
-  // get user input values
-  //const newZip = document.getElementById('zip').value;
-  //const content = document.getElementById('feelings').value;
-/*
-  getWeather(baseURL, newZip, appID)
-    .then(function (userData) {
-      // add data to POST request
-      postData('/add', { date: newDate, temp: userData.main.temp, content })
-    }).then(function (newData) {
-      // call updateUI to update browser content
-      updateUI()
-    })
-  // reset form
-  form.reset();
-}
-
-*/
-  // Call function to fetch via OpenWeatherMap
+// Call function to fetch via OpenWeatherMap
 const getWeather = async (baseURL, zip = '94712,us', api) => {
   const url = `http://${baseURL}zip=${zip}&appid=${api}`
   const response = await fetch(url)
@@ -85,4 +61,3 @@ const handleClick = async () => {
 // Add element event listener with 'generate' id
 const ele = document.getElementById('generate')
 ele.addEventListener('click', handleClick)
-
