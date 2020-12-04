@@ -1,11 +1,16 @@
 body{
-    background: #fffff8;
+    /*changing the backgroun color to a gif background image*/
+    background-image: url('../img/background.jpg');
+    background-size: cover;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 #app{
     display: grid;
+    margin: 20px;
     grid-auto-rows: minmax(150px, auto);
+    align-items: center;
+    grid-auto-rows: auto;
     /* grid-template-columns:  */
     height:100vh;
     background: #f23557;
