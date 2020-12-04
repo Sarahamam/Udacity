@@ -4,7 +4,7 @@ const icons = document.querySelectorAll('.entry__icon');
 
 // Base URL and API Key for OpenWeatherMap API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '8fe35d267fec84174d32e7bac0493cea';
+const appID = '8fe35d267fec84174d32e7bac0493cea';
 
 //Get the date
 let d = new Date();
@@ -20,7 +20,7 @@ function performAction(e) {
   const newZip = document.getElementById('zip').value;
   const content = document.getElementById('feelings').value;
 
-  getWeather(baseURL, newZip, apiKey)
+  getWeather(baseURL, newZip, appID)
     .then(function (userData) {
       // add data to POST request
       postData('/add', { date: newDate, temp: userData.main.temp, content })
@@ -33,9 +33,9 @@ function performAction(e) {
 }
 
 /* Function to GET Web API Data*/
-const getWeather = async (baseURL, newZip, apiKey) => {
+const getWeather = async (baseURL, newZip, appID) => {
   // res equals to the result of fetch function
-  const res = await fetch(baseURL + newZip + apiKey);
+  const res = await fetch(baseURL + newZip + appID);
   try {
     // userData equals to the result of fetch function
     const userData = await res.json();
