@@ -16,8 +16,8 @@ let d = new Date();
 let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
 
 // Call function to fetch via OpenWeatherMap
-const getWeather = async (baseURL, zipInput , api) => {
-  const url = `http://${baseURL}zip=${zip}&appID=${api}`
+const getWeather = async (baseURL, zipInput , appID) => {
+  const url = `http://${baseURL}zip=${zipInput}&appID=${appID}`
   const response = await fetch(url)
   let jsonResponse = await response.json()
   return jsonResponse
