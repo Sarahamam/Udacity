@@ -52,7 +52,7 @@ const handleClick = async () => {
   const data = {
     temperature: weatherData.main.temp,
     date: newDate,
-    userresponse: userInput.value
+    userResponse: userInput.value
   }
   await postData(postURL, data)
   updateUI()
