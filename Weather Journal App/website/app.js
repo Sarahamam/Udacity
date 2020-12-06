@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------------------
 /* Global Project Variables */
-const appid = '8fe35d267fec84174d32e7bac0493cea'
 const baseURL = 'api.openweathermap.org/data/2.5/weather?'
+const appid = '8fe35d267fec84174d32e7bac0493cea'
 const zipInput = document.getElementById('zip');
 const userInput = document.getElementById('feelings')
 const dateHolder = document.getElementById('date')
