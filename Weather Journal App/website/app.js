@@ -63,10 +63,9 @@ const ele = document.getElementById('generate')
 ele.addEventListener('click', handleClick)
 */
 
----------------------
   /* Global Variables */
-const form = document.querySelector('.app__form');
-const icons = document.querySelectorAll('.entry__icon');
+const form = document.querySelector('.app_form');
+const icons = document.querySelectorAll('.entry_icon');
 
 // Base URL and API Key for OpenWeatherMap API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
