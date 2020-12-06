@@ -1,4 +1,180 @@
+// OpenWeatherMap API
+const personalKey = '8fe35d267fec84174d32e7bac0493cea';
+const baseURL1 = 'https://api.openweathermap.org/data/2.5/weather?zip=';
+const baseURL2 = ',us&units=imperial&appid=';
 
+const createWeatherURL = ( zipCode ) => {
+
+	return baseURL1 + zipCode + baseURL2 + personalKey;
+
+};
+
+// Function used to get weather data from OpenWeatherMap API
+const getWeatherInfo = async ( zipCode ) => {
+
+	const weatherURL = createWeatherURL( zipCode ); // Create valid API URL
+	const response = await fetch( weatherURL ); // Get weather info from OpenWeatherMap.org
+
+	try{
+
+		const weatherData = await response.json(); // Convert response to JSON and store
+		weatherData.zipCode = zipCode; // Store selected zip code in return data
+		
+		// Exit promise chain if zip code is not found on OpenWeatherMap API
+		if( weatherData.cod == 404 ){
+
+			return Promise.reject( weatherData.message );
+
+		}
+
+		return weatherData;
+
+	}catch( error ){
+
+		console.log( error );
+
+	}
+
+};
+
+// Function for posting app data to the server
+const postAppData = async ( weatherData ) => {
+
+	// Get user input
+	const feelings = document.querySelector( '#feelings' ).value;
+
+	// Create data for app entry
+	const date = new Date();
+	const entryID = date.getTime();
+	const dateString = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+
+	const appData = {
+		'entryID': entryID,
+		'date': dateString,
+		'zipCode': weatherData.zipCode,
+		'name': weatherData.name,
+		'temp': weatherData.main.temp,
+		'feelings': feelings
+		};
+
+	const response = await fetch( '/upload', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify( appData )
+		});
+
+	try{
+
+		const returnData = await response.json();
+		return returnData.entryID;
+
+	}catch( error ){
+
+		console.log( error );
+
+	}
+
+};
+
+// Function for getting app data from the server
+const getAppData = async () => {
+
+	const response = await fetch( '/all' );
+
+	try{
+
+		const appData = await response.json(); // Convert response to JSON and store
+		return appData;
+
+	}catch( error ){
+
+		console.log( error );
+
+	}
+
+};
+
+// Update app UI with the app data
+const updateUI = async ( appData ) => {
+
+	let allEntries = "";
+
+	for( const entry of appData.reverse() ){
+
+		const journalEntry = `
+		<div class="journalEntry">
+			<div id="date">${entry.date}</div>
+			<div id="city">${entry.name}</div>
+			<div id="temp">${entry.temp}°F</div>
+			<div id="content">${entry.feelings}</div>
+		</div>
+		`;
+
+		allEntries += journalEntry;
+
+	}
+	
+	if( allEntries != "" ){
+
+		document.querySelector( '#entryHolder' ).innerHTML = allEntries;
+
+	}else{
+
+		document.querySelector( '#entryHolder' ).innerHTML = "Your journal is currently empty.";
+
+	}
+
+};
+
+// Main function used to add a journal entry to the app
+const addJournalEntry = () => {
+
+	// Store user input
+	const zipCode = document.querySelector( '#zip' ).value;
+	const feelings = document.querySelector( '#feelings' ).value;
+
+	// Simple form validation for zip code
+	if( zipCode.length == 5 && !isNaN( zipCode ) ){
+
+		// Simple form validation for feelings
+		if( feelings.length > 0 ){
+
+			// Get weather info, post data to server, and return entry from server
+			getWeatherInfo( zipCode )
+				.then( ( weatherData ) => { return postAppData( weatherData ); } )
+				.then( () => { return getAppData(); } )
+				.then( ( appData ) => { updateUI( appData );} )
+				.catch( ( error ) => { alert( error ); } );
+
+		}else{
+
+			alert( "Please enter your feelings." );
+			document.querySelector( '#feelings' ).focus();
+
+		}
+	
+	}else{
+
+		alert( 'Please enter a valid 5 digit zip code.' );
+		document.querySelector( '#zip' ).focus();
+
+	}
+
+};
+
+// Add event listeners when the page is ready
+document.addEventListener( 'DOMContentLoaded', () => {
+
+	// Add functionality to 'Generate' button via click event listener
+	document.querySelector( '#generate' ).addEventListener( 'click', addJournalEntry );
+
+	// Load existing journal entries
+	getAppData()
+		.then( ( appData ) => { updateUI( appData ); } );
+
+});
 /* Global Project Variables */
 /*
 const baseURL = 'api.openweathermap.org/data/2.5/weather?'
@@ -63,90 +239,4 @@ const ele = document.getElementById('generate')
 ele.addEventListener('click', handleClick)
 */
 
-  /* Global Variables */
-const form = document.querySelector('.app_form');
-const icons = document.querySelectorAll('.entry_icon');
-
-// Base URL and API Key for OpenWeatherMap API
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '&appid=8fe35d267fec84174d32e7bac0493cea';
-
-//Get the date
-let d = new Date();
-let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
-
-// Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', performAction);
-
-/* Function called by event listener */
-function performAction(e) {
-  e.preventDefault();
-  // get user input values
-  const newZip = document.getElementById('zip').value;
-  const content = document.getElementById('feelings').value;
-
-  getWeather(baseURL, newZip, apiKey)
-    .then(function (userData) {
-      // add data to POST request
-      postData('/add', { date: newDate, temp: userData.main.temp, content })
-    }).then(function (newData) {
-      // call updateUI to update browser content
-      updateUI()
-    })
-  // reset form
-  form.reset();
-}
-
-/* Function to GET Web API Data*/
-const getWeather = async (baseURL, newZip, apiKey) => {
-  // res equals to the result of fetch function
-  const res = await fetch(baseURL + newZip + apiKey);
-  try {
-    // userData equals to the result of fetch function
-    const userData = await res.json();
-    return userData;
-  } catch (error) {
-    console.log("error", error);
-  }
-}
-
-/* Function to POST data */
-const postData = async (url = '', data = {}) => {
-  const req = await fetch(url, {
-    method: "POST",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8"
-    },
-    body: JSON.stringify({
-      date: data.date,
-      temp: data.temp,
-      content: data.content
-    })
-  })
-
-  try {
-    const newData = await req.json();
-    return newData;
-  }
-  catch (error) {
-    console.log(error);
-  }
-};
-
-
-const updateUI = async () => {
-  const request = await fetch('/all');
-  try {
-    const allData = await request.json()
-    // show icons on the page
-    icons.forEach(icon => icon.style.opacity = '1');
-    // update new entry values
-    document.getElementById('date').innerHTML = allData.date;
-    document.getElementById('temp').innerHTML = allData.temp;
-    document.getElementById('content').innerHTML = allData.content;
-  }
-  catch (error) {
-    console.log("error", error);
-  }
-};
+ 
