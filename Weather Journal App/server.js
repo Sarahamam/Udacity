@@ -11,7 +11,7 @@ const cors = require( 'cors' );
 const app = express();
 
 // Setup server
-app.use( express.static('www') ); // Specify app directory
+app.use( express.static('website') ); // Specify app directory
 app.use( bodyParser.urlencoded({ extended: false }) );
 app.use( bodyParser.json() );
 app.use( cors() ); // Allow cross origin functionality
