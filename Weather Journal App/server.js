@@ -19,7 +19,8 @@ app.listen( port, portInfo );
 
 // Port info callback
 function portInfo(){
-	console.log( `Server Running on Port: ${port}` );
+	console.log(`Server Running`);
+	console.log(`Server Running on localhost: ${port}` );
 }
 
 // Add POST route
