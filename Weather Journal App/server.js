@@ -1,6 +1,6 @@
 // Initialize global vars
 const projectData = []; // Empty array used as endpoint for all routes
-const port = 8080;
+const port = 8000;
 
 // Include Node.js modules
 const express = require( 'express' );
