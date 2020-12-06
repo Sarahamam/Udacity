@@ -22,8 +22,8 @@ app.use(cors());
 app.use(express.static('website'));
 
 // Post Route
-const data = [];
-app.post('/add', addInfo);
+// Add POST route
+app.post( '/upload', postData );
 
 function addInfo(req, res) {
   projectData['date'] = req.body.date;
@@ -32,18 +32,43 @@ function addInfo(req, res) {
   res.send(projectData);
 }
 
-// Callback function to complete GET '/all'
-app.get('/all', getInfo);
+// Function that handles POST requests
+function postData( request, response ){
 
-function getInfo(req, res) {
-  res.send(projectData);
+	projectData.push( request.body );
+	console.log( 'postData()' );
+	console.log( request.body );
+	response.send( request.body );
+
+// Add GET route
+app.get( '/all', getData );
+
+// Function that handles GET requests
+function getData( request, response ){
+
+	console.log( 'getData()' );
+	console.log( projectData );
+	response.send( projectData );
+
 }
-
 // Setup Server
-
+/*
 const port = 8000;
 const server = app.listen(port, listening);
 
 function listening() {
   console.log(`running on localhost: ${port}`);
 };
+*/
+// Setup server
+const port = 8000;
+app.use( express.static('www') ); // Specify app directory
+app.use( bodyParser.urlencoded({ extended: false }) );
+app.use( bodyParser.json() );
+app.use( cors() ); // Allow cross origin functionality
+app.listen( port, portInfo );
+
+// Port info callback
+function portInfo(){
+	console.log( `Server Running on Port: ${port}` );
+}
