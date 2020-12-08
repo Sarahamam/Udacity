@@ -1,6 +1,6 @@
 // OpenWeatherMap API
-const personalKey = '8fe35d267fec84174d32e7bac0493cea';
-const baseUrl = 'https://api.openweathermap.org/data/2.5/weather?zip=';
+//const personalKey = '8fe35d267fec84174d32e7bac0493cea';
+//const baseUrl = 'https://api.openweathermap.org/data/2.5/weather?zip=';
 /* Global Variables */
 const generate = document.getElementById("generate");
 
