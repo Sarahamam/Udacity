@@ -1,49 +1,34 @@
-// Initialize global vars
-const projectData = []; // Empty array used as endpoint for all routes
-const port = 8000;
+// Setup empty JS object to act as endpoint for all routes
+projectData = {};
 
-// Include Node.js modules
-const express = require( 'express' );
-const bodyParser = require( 'body-parser' );
-const cors = require( 'cors' );
+// Require Express to run server and routes
+const express = require('express');
+const bodyParser = require('body-parser');
 
-// Initialize instance of the server using Express
+// Start up an instance of app
 const app = express();
 
-// Setup server
-app.use( express.static('website') ); // Specify app directory
-app.use( bodyParser.urlencoded({ extended: false }) );
-app.use( bodyParser.json() );
-app.use( cors() ); // Allow cross origin functionality
-app.listen( port, portInfo );
+/* Middleware*/
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-// Port info callback
-function portInfo(){
-	console.log(`Server Running`);
-	console.log(`Server Running on localhost: ${port}` );
-}
+// Cors for cross origin allowance
+const cors = require('cors');
+app.use(cors());
 
-// Add POST route
-app.post( '/upload', postData );
+// Initialize the main project folder
+app.use(express.static('website'));
 
-// Function that handles POST requests
-function postData( request, response ){
+app.post('/add', function (req, res) {
+  projectData = req.body;
+});
 
-	projectData.push( request.body );
-	console.log( 'postData()' );
-	console.log( request.body );
-	response.send( request.body );
+app.get('/all', function (req, res) {
+    res.send(projectData);
+});
 
-}
-
-// Add GET route
-app.get( '/all', getData );
-
-// Function that handles GET requests
-function getData( request, response ){
-
-	console.log( 'getData()' );
-	console.log( projectData );
-	response.send( projectData );
-
-}
+// Setup Server
+const server = app.listen(process.env.PORT || 8000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
