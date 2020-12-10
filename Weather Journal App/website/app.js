@@ -54,6 +54,7 @@ const postData = async (url = '', data = {}) => {
     });
     try {
         const newData = await response.json();
+        console.log(newData);
         return newData;
     }
     catch (error) {
@@ -68,6 +69,7 @@ const updateUI = async () => {
     document.getElementById('date').innerHTML = `Today's date: ${allData.date}`;
     document.getElementById('temp').innerHTML = `Temperature: ${allData.temp} ° Fahrenheit`;
     document.getElementById('content').innerHTML = `You're feeling: ${allData.content} today`;
+    console.log(allData);
     }
     catch (error) {
         console.log("error", error);
