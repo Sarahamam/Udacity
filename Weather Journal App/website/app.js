@@ -29,7 +29,7 @@ const getWeather = async (baseUrl,newZip,apiKey) => {
     const res = await fetch(baseUrl+newZip+apiKey);    
     try {
         const data = await res.json(); 
-        console.log(data);
+        console.log(getWeather);
         if (data.message){
             alert(data.message);
             return false
@@ -43,7 +43,7 @@ const getWeather = async (baseUrl,newZip,apiKey) => {
 }
 // Function to POST data
 const postData = async (url = '', data = {}) => {
-    console.log(data);
+    console.log(postData);
     const response = await fetch(url, {
         method: "POST",
         credentials: "same-origin",
