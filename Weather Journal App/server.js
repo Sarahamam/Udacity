@@ -1,8 +1,10 @@
 // Setup empty JS object to act as endpoint for all routes
 projectData = {};
 
+//Express Environment
 // Require Express to run server and routes
 const express = require('express');
+//Project Dependencies
 const bodyParser = require('body-parser');
 
 // Start up an instance of app
@@ -14,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Cors for cross origin allowance
+//Project Dependencies
 const cors = require('cors');
 app.use(cors());
 
