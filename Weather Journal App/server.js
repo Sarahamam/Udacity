@@ -1,44 +1,49 @@
-// Setup empty JS object to act as endpoint for all routes
-projectData = {};
+// Initialize global variables
+const projectData = []; // Empty array used as endpoint for all routes initiated in server.js
+const port = 8000;
 
-//Express Environment
-// Require Express to run server and routes
-const express = require('express');
-//Project Dependencies
-const bodyParser = require('body-parser');
+// Include Node.js modules
+const express = require( 'express' );
+const bodyParser = require( 'body-parser' );
+const cors = require( 'cors' );
 
-// Start up an instance of app
+// Initialize instance of the server using Express
 const app = express();
 
-/* Middleware*/
-//Here we are configuring express to use body-parser as middle-ware.
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// Setup server
+app.use( express.static('website') ); // Specify app directory pointing to the project folder 
+app.use( bodyParser.urlencoded({ extended: false }) );
+app.use( bodyParser.json() );
+app.use( cors() ); // Allow cross origin functionality
+app.listen( port, portInfo );
 
-// Cors for cross origin allowance
-//Project Dependencies
-const cors = require('cors');
-app.use(cors());
+// Port info callback
+function portInfo(){
+	console.log(`Server Running`);
+	console.log(`Server Running on localhost: ${port}` );
+}
 
-// Initialize the main project folder
-app.use(express.static('website'));
+// Add POST route
+app.post( '/upload', postData );
 
-// GET route
-app.get('/data', (req, res) => {
-  console.log('GET request received');
-  res.send(projectData);
-});
+// Function that handles POST requests
+function postData( request, response ){
 
-// POST route
-app.post('/', (req, res) => {
-  projectData.date = req.body.date;
-  projectData.temperature = req.body.main.temp;
-  projectData.feelings = req.body.feelings;
-  console.log('POST request received');
-  res.end();
-});
+	projectData.push( request.body );
+	console.log( 'postData()' );
+	console.log( request.body );
+	response.send( request.body );
 
-// Setup Server
-const server = app.listen(process.env.PORT || 8000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-});
+}
+
+// Add GET route
+app.get( '/all', getData );
+
+// Function that handles GET requests
+function getData( request, response ){
+
+	console.log( 'getData()' );
+	console.log( projectData );
+	response.send( projectData );
+
+}
