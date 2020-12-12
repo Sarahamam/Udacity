@@ -24,4 +24,5 @@ Inorder to test the code as we go, we will use ----> `tests.js`.
 4. Chain another Promise that makes a POST request to add the API data, as well as data entered by the user, to your app
 5. Finally, chain another Promise that updates the UI dynamically
 
-## Getting Started 
+## AppDesign 
+I created my own design to reflect a Weather Journal Application
